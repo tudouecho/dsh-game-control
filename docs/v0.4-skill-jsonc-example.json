@@ -1,0 +1,115 @@
+// dsh-game-control 技能配置文件（JSONC：支持 // 行注释与 /* */ 块注释）
+// 标题：Keep on Mining 挖矿循环（完成→下一轮→30s圆形）
+// 适用游戏：Keep on Mining!
+// 说明：从「挖矿已完成」面板开始：找「开始挖矿！」并点击进入下一轮，等 2s 后以窗口中心为圆心、窗口宽度 1/4 为半径画圆 30 秒；一轮结束会再次出现完成面板。适合用 skill_run repeat 连续刷轮。
+// 生成时间：2026-11-08T11:13:51.934Z
+// 步骤数：6
+// 保存时自动补全每步参数并重新生成中文注释；手工修改注释会被覆盖，自定义备注请写 note 字段。
+// 直接编辑本文件后，下一次 skill_get / skill_run 生效（也可在面板「技能库 → 完整配置文件」编辑）。
+{
+  "schema": 1,
+  "id": "keep-on-mining-30s",
+  "title": "Keep on Mining 挖矿循环（完成→下一轮→30s圆形）",
+  "description": "从「挖矿已完成」面板开始：找「开始挖矿！」并点击进入下一轮，等 2s 后以窗口中心为圆心、窗口宽度 1/4 为半径画圆 30 秒；一轮结束会再次出现完成面板。适合用 skill_run repeat 连续刷轮。",
+  "game": "Keep on Mining!",
+  "tags": ["mining", "loop", "auto"],
+  "markdown": "## 前置条件\n\n- 游戏《Keep on Mining!》已启动，窗口未最小化（可在后台；skill 第一步会激活窗口）。\n- 模板位于 `<GAME_CONTROL_HOME>/templates/keep-on-mining/`：\n  - `mining_done.png`：完成面板标题「挖矿已完成！」\n  - `next_round.png`：完成面板里的「开始挖矿！」按钮文字\n\n## 执行逻辑\n\n1. `activate_window`：把游戏切到前台（否则键鼠会打到 DSH 窗口）。\n2. `wait_image(mining_done, 120s)`：等待完成面板出现。\n3. `wait_image(next_round, 15s)` + `mouse_click`：点「开始挖矿！」进入下一轮（用 `$next.match.center` 取坐标）。\n4. `wait(2000)`：等转场。\n5. `mouse_circle`：圆心=窗口客户区中心，半径=窗口宽度/4（本机 1920 宽 → 480px），30 秒约 12 圈；传 hwnd 做前台校验，F12 中止。\n\n## 重复执行\n\n`skill_run {id, repeat: N}` 可连续刷 N 轮；每轮约 35 秒。运行中可按 F12 中止（会释放鼠标键）。\n\n## 注意\n\n- 模板对窗口分辨率/DPI 变化敏感；换分辨率后需重新裁剪。\n- 保存会自动备份旧版本，可在面板「技能库」里恢复。\n",
+  "steps": [
+    // 第 1 步：激活窗口 —— 前置窗口（标题包含“Keep on Mining”，恢复最小化=true，超时 2000ms）；无额外等待
+    {
+      "action": "activate_window",
+      "params": {
+        "window": "Keep on Mining",
+        "restore": true,
+        "timeoutMs": 2000
+      },
+      "waitMs": 0,
+      "continueOnError": false
+    },
+    // 第 2 步：等待模板 —— 在 窗口“Keep on Mining”的 clientRect 等待模板“keep-on-mining/mining_done.png”出现（超时 120000ms，间隔 250ms，阈值 0.85，缩小搜索=[1]）；无额外等待；结果保存为 done
+    {
+      "action": "wait_image",
+      "params": {
+        "template": "keep-on-mining/mining_done.png",
+        "window": "Keep on Mining",
+        "timeoutMs": 120000,
+        "threshold": 0.85,
+        "grayscale": true,
+        "maxResults": 3,
+        "scales": [
+          1
+        ],
+        "intervalMs": 250,
+        "mode": "appear"
+      },
+      "waitMs": 0,
+      "continueOnError": false,
+      "saveAs": "done"
+    },
+    // 第 3 步：等待模板 —— 在 窗口“Keep on Mining”的 clientRect 等待模板“keep-on-mining/next_round.png”出现（超时 15000ms，间隔 250ms，阈值 0.85，缩小搜索=[1]）；无额外等待；结果保存为 next
+    {
+      "action": "wait_image",
+      "params": {
+        "template": "keep-on-mining/next_round.png",
+        "window": "Keep on Mining",
+        "timeoutMs": 15000,
+        "threshold": 0.85,
+        "grayscale": true,
+        "maxResults": 3,
+        "scales": [
+          1
+        ],
+        "intervalMs": 250,
+        "mode": "appear"
+      },
+      "waitMs": 0,
+      "continueOnError": false,
+      "saveAs": "next"
+    },
+    // 第 4 步：鼠标点击 —— 在 ($next.match.center.x, $next.match.center.y) 点击 1 次（左键，间隔 60ms）；无额外等待
+    {
+      "action": "mouse_click",
+      "params": {
+        "x": "$next.match.center.x",
+        "y": "$next.match.center.y",
+        "button": "left",
+        "clicks": 1,
+        "intervalMs": 60
+      },
+      "waitMs": 0,
+      "continueOnError": false
+    },
+    // 第 5 步：等待 —— 等待 2000ms；无额外等待
+    {
+      "action": "wait",
+      "params": {
+        "durationMs": 2000
+      },
+      "waitMs": 0,
+      "continueOnError": false
+    },
+    // 第 6 步：圆形轨迹 —— 以 ($window.clientCenterX, $window.clientCenterY) 为圆心、半径 $window.quarterWidthpx 画圆 30000ms（周期 2500ms，顺时针，120Hz，按住 无，中止键 f12）；无额外等待；备注：半径=窗口宽度/4（本机约 480px）；想固定可把 radius 改成数字，例如 360。
+    {
+      "action": "mouse_circle",
+      "params": {
+        "centerX": "$window.clientCenterX",
+        "centerY": "$window.clientCenterY",
+        "radius": "$window.quarterWidth",
+        "durationMs": 30000,
+        "periodMs": 2500,
+        "hwnd": "$window.hwnd",
+        "abortKey": "f12",
+        "direction": "cw",
+        "startAngleDeg": -90,
+        "samplesPerSecond": 120,
+        "leadInMs": 300,
+        "button": "none"
+      },
+      "waitMs": 0,
+      "continueOnError": false,
+      "note": "半径=窗口宽度/4（本机约 480px）；想固定可把 radius 改成数字，例如 360。"
+    }
+  ],
+  "createdAt": "2026-11-08T10:42:43.211Z",
+  "updatedAt": "2026-11-08T11:13:51.934Z"
+}

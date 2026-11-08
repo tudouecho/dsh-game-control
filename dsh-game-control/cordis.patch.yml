@@ -1,0 +1,11 @@
+# dsh-game-control bundle 挂载声明。
+# 安装方式（无需手工改 profile 的 cordis.patch.yml）：
+#   plugin_manager  action: install_bundle   target: <本目录绝对路径>
+# 或开发期：
+#   dsh plugin --profile desktop add link:<本目录绝对路径>
+#
+# 本行只加载 Host 半（index.js：/api/game-control 路由 + game_control 工具）；
+# package.json 的 dsh.client 声明让 Web 端另行加载 client.js（左侧栏入口 + 主面板）。
+- insert:
+    - id: game-control
+      name: '@local/dsh-game-control'

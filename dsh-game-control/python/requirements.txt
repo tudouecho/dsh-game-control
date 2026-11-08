@@ -1,0 +1,20 @@
+# DSH 游戏操作插件 —— Python 后端依赖
+#
+# 安装：pip install -r requirements.txt
+#
+# 必需依赖：
+#   Pillow  截图 PNG/JPEG 编码与测试校验（缺失时截图动作返回 MISSING_DEPENDENCY）
+Pillow>=9.0.0
+
+# 可选依赖：
+#   pynput  仅 macOS / Linux 键鼠后端使用；Windows 使用纯 ctypes（SendInput），无需安装。
+#           未安装时非 Windows 平台会依次尝试 xdotool / osascript 兜底。
+# pynput>=1.7.6
+
+# 后台窗口截图（SPEC 2.3.1，Windows）：
+#   numpy    WGC 主路径（python/vendor/windows_capture/）依赖 numpy；DSH 自带 Python 已内置。
+#            缺失时 capture_window 自动回退 PrintWindow / GetWindowDC / screen 引擎。
+# v0.3 模板匹配（find_image / wait_image）同样依赖 numpy；缺失时返回 MISSING_DEPENDENCY。
+# numpy>=1.24
+
+# 说明：本后端不联网，未使用 socket / http / requests / websocket 等任何网络库。

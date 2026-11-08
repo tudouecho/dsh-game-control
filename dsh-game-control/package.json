@@ -1,0 +1,49 @@
+{
+  "name": "@local/dsh-game-control",
+  "version": "0.6.2",
+  "private": true,
+  "description": "DSH 游戏操作插件：左侧栏面板 + game_control 工具，经 Python 后端直接控制鼠标键盘并随时截图。",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./icon": "./icon.svg",
+    "./locale/*.json": "./locale/*.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "icon.svg",
+    "locale/*.json",
+    "python/*.py",
+    "python/requirements.txt",
+    "python/vendor/**"
+  ],
+  "engines": {
+    "dsh": ">=0.2.1-rc.2 <0.3.0",
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-sidebar"
+      ]
+    },
+    "compatibility": {
+      "dsh": ">=0.2.1-rc.2 <0.3.0",
+      "node": ">=20",
+      "systems": ["win32", "darwin", "linux"],
+      "profiles": ["desktop", "web"]
+    }
+  }
+}

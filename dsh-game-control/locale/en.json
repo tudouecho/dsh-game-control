@@ -1,0 +1,4 @@
+{
+  "meta.title": "Game control",
+  "meta.description": "Left-sidebar game control panel: mouse and keyboard through a Python backend, on-demand full-screen or region screenshots, plus a game_control tool for the agent."
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Game control">
+  <defs>
+    <linearGradient id="gcBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#1e40af"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0f172a"/>
+  <rect x="6" y="6" width="52" height="52" rx="11" fill="none" stroke="#1d4ed8" stroke-opacity="0.45"/>
+  <path d="M20 22h24c5.5 0 9 4.2 10.2 9.4l2.1 9c1.1 4.7-2.4 9-7.2 9-2.6 0-5-1.2-6.6-3.2L39 42H25l-3.5 4.2A8.3 8.3 0 0 1 14.9 49.4c-4.8 0-8.3-4.3-7.2-9l2.1-9C11 26.2 14.5 22 20 22Z" fill="url(#gcBody)"/>
+  <g fill="#e0ecff">
+    <rect x="17" y="29" width="4.5" height="13" rx="1.6"/>
+    <rect x="12.7" y="33.2" width="13" height="4.5" rx="1.6"/>
+    <circle cx="44" cy="32" r="3"/>
+    <circle cx="49.5" cy="38" r="3"/>
+    <circle cx="38.5" cy="38" r="3"/>
+    <circle cx="44" cy="44" r="3"/>
+  </g>
+  <rect x="27.5" y="26" width="9" height="3.4" rx="1.7" fill="#bfdbfe"/>
+</svg>

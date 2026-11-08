@@ -1,0 +1,4 @@
+{
+  "meta.title": "游戏操作",
+  "meta.description": "左侧栏游戏操作面板：通过 Python 后端直接控制鼠标键盘，随时全屏或区域截图，并向对话提供 game_control 工具。"
+}
